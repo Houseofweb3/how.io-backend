@@ -1,7 +1,9 @@
-// import { fetchAaveVersionRevenue, introspectFields } from './services/fetchEthereumRevenue';
+import { fetchAaveVersionRevenue, introspectFields, introspectAllTypes } from './services/fetchEthereumRevenue';
 import { fetchAaveRevenue } from "./services/newFetch";
 import { getAggregateAaveRevenue } from "./services/fetchAaveVersions";
 import { fetchUniswapRevenue } from "./services/graphFetch";
+import { fetchUniswapRevenueFromDayData } from "./services/graphFetch2.0";
+import { fetchAlgebraRevenue } from './services/graphFetch3.0';
 
 const apiKey = '14b6c406a25aab0b82b588a2891c7fef';
 
@@ -19,13 +21,30 @@ interface ProjectConfig {
 
 // Centralized project configurations
 const projectConfigs: ProjectConfig = {
-    "Aave": {
-        "V3 Ethereum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk`,
-        "V2 Ethereum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/C2zniPn45RnLDGzVeGZCx2Sw3GXrbc9gL4ZfL8B8Em2j`,
-        "V3 Arbitrum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/4xyasjQeREe7PxnF6wVdobZvCw5mhoHZq3T7guRpuNPf`,
-        "V3 Polygon": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/6yuf1C49aWEscgk5n9D1DekeG1BCk5Z9imJYJT3sVmAT`,
-        "V3 Optimism": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/3RWFxWNstn4nP3dXiDfKi9GgBoHx7xzc7APkXs1MLEgi`,
-    },
+    // "Aave": {
+    //     "V3 Ethereum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk`,
+    //     "V2 Ethereum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/C2zniPn45RnLDGzVeGZCx2Sw3GXrbc9gL4ZfL8B8Em2j`,
+    //     "V3 Arbitrum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/4xyasjQeREe7PxnF6wVdobZvCw5mhoHZq3T7guRpuNPf`,
+    //     "V3 Polygon": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/6yuf1C49aWEscgk5n9D1DekeG1BCk5Z9imJYJT3sVmAT`,
+    //     "V3 Optimism": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/3RWFxWNstn4nP3dXiDfKi9GgBoHx7xzc7APkXs1MLEgi`,
+    // },
+
+    // "PancakeSwap": {
+    //     "V3 BSC": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/A1BC1hzDsK4NTeXBpKQnDBphngpYZAwDUF7dEBfa3jHK`,
+    //     "V3 Ethereum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/JAGXF8B14mpB8QGKnwhKTs5JxsQZBJQvbDGFcWwL7gbm`,
+    // },
+
+    // "Lido": {
+    //     " Lido Ethereum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/F7qb71hWab6SuRL5sf6LQLTpNahmqMsBnnweYHzLGUyG`,
+    // },
+
+    // "Venus": {
+    //     "Venus BSC": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/CwswJ7sfENafqgAYU1upn3hQgoEV2CXXRZRJ7XtgJrKG`,
+    // },
+
+    "LFG": {
+        "Banker Joe Avalanche": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/9NjYuG2BFU1BPacNdKymd9eNdfVCaJM6LhsgD8zSQgDK`,
+    }
 
 
     // "Aerodrome": {
@@ -105,21 +124,43 @@ async function main() {
 // main();
 
 
-
+// uniswap day datas
 const uniswapSubgraphs = {
     "Uniswap-V4-Eth": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/DiYPVdygkfjDWhbxGSqAQxwBKmfKnkWQojqeM2rkLb3G`,
     "Uniswap-V3-Eth": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV`
 };
+
+
+const aerodromeSubgraphs = {
+    "Aerodrome": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/GENunSHWLBXm59mBSgPzQ8metBEp9YDfdqwFr91Av1UM`
+};
+
+// 
+const pharaohSubgraphs = {
+    "Pharaoh-Avalanche": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/NFHumrUD9wtBRnZnrvkQksZzKpic26uMM5RbZR56Gns`
+};
+
+
+
+// aglebra
+const QuickSwapSubgraphs = {
+    "QuickSwap-Matic": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/FqsRcH1XqSjqVx9GRTvEJe959aCbKrcyGgDWBrUkG24g`
+};
+
+// const QuickSwapSubgraphs = {
+//     "QuickSwap-Matic": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/6K19ca6rG5cDS7ZPdfVbEtgUAT3B7wjqTu6wpyXvqNJJ`
+// };
 
 async function graphMain() {
     try {
         // Collect all version revenues
         const revenues = [];
 
-        for (const [version, url] of Object.entries(uniswapSubgraphs)) {
+        for (const [version, url] of Object.entries(QuickSwapSubgraphs)) {
             try {
                 console.log(`Fetching ${version}...`);
-                const revenue = await fetchUniswapRevenue(url, apiKey);
+                // const revenue = await fetchUniswapRevenueFromDayData(url, apiKey);
+                const revenue = await fetchAlgebraRevenue(url, apiKey);
                 revenues.push(revenue);
                 console.log(`${version} revenue:`, revenue.revenue);
             } catch (error: any) {
@@ -174,8 +215,8 @@ graphMain();
 
 
 // (async () => {
-//     const fields = await introspectFields(
-//         'https://gateway.thegraph.com/api/14b6c406a25aab0b82b588a2891c7fef/subgraphs/id/JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk',
+//     const fields = await introspectAllTypes(
+//         `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/FqsRcH1XqSjqVx9GRTvEJe959aCbKrcyGgDWBrUkG24g`,
 //         '14b6c406a25aab0b82b588a2891c7fef'
 //     );
 //     console.log(fields);

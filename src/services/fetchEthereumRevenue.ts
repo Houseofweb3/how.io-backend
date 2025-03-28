@@ -96,3 +96,56 @@ export async function introspectFields(subgraphUrl: string, apiKey: string) {
     }
 }
 
+
+export async function introspectAllTypes(subgraphUrl: string, apiKey: string) {
+    const client = new GraphQLClient(subgraphUrl, {
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+        },
+    });
+
+    const query = gql`
+    {
+      __schema {
+        types {
+          name
+          kind
+          fields {
+            name
+          }
+        }
+      }
+    }
+    `;
+
+    try {
+        const res = await client.request(query);
+        const schemaResponse = res as { __schema: { types: { name: string; kind: string; fields: { name: string }[] | null }[] } };
+        const types = schemaResponse.__schema.types as {
+            name: string;
+            kind: string;
+            fields: { name: string }[] | null;
+        }[];
+
+        // Filter out internal types and only include OBJECT types
+        const objectTypes = types.filter(
+            (type) =>
+                type.kind === 'OBJECT' &&
+                !type.name.startsWith('__') &&
+                type.fields !== null
+        );
+
+        console.log('📦 Queryable types and their fields:\n');
+        for (const type of objectTypes) {
+            console.log(`🔹 ${type.name}`);
+            type.fields?.forEach((field) => {
+                console.log(`   - ${field.name}`);
+            });
+            console.log('\n');
+        }
+    } catch (err) {
+        console.error('❌ Introspection failed:', err);
+    }
+}
+
+
