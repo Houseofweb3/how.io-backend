@@ -21,13 +21,13 @@ interface ProjectConfig {
 
 // Centralized project configurations
 const projectConfigs: ProjectConfig = {
-    // "Aave": {
-    //     "V3 Ethereum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk`,
-    //     "V2 Ethereum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/C2zniPn45RnLDGzVeGZCx2Sw3GXrbc9gL4ZfL8B8Em2j`,
-    //     "V3 Arbitrum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/4xyasjQeREe7PxnF6wVdobZvCw5mhoHZq3T7guRpuNPf`,
-    //     "V3 Polygon": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/6yuf1C49aWEscgk5n9D1DekeG1BCk5Z9imJYJT3sVmAT`,
-    //     "V3 Optimism": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/3RWFxWNstn4nP3dXiDfKi9GgBoHx7xzc7APkXs1MLEgi`,
-    // },
+    "Aave": {
+        "V3 Ethereum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/JCNWRypm7FYwV8fx5HhzZPSFaMxgkPuw4TnR3Gpi81zk`,
+        "V2 Ethereum": `https://gateway.thegraph.com/api/${apiKey}/sub graphs/id/C2zniPn45RnLDGzVeGZCx2Sw3GXrbc9gL4ZfL8B8Em2j`,
+        "V3 Arbitrum": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/4xyasjQeREe7PxnF6wVdobZvCw5mhoHZq3T7guRpuNPf`,
+        "V3 Polygon": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/6yuf1C49aWEscgk5n9D1DekeG1BCk5Z9imJYJT3sVmAT`,
+        "V3 Optimism": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/3RWFxWNstn4nP3dXiDfKi9GgBoHx7xzc7APkXs1MLEgi`,
+    },
 
     // "PancakeSwap": {
     //     "V3 BSC": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/A1BC1hzDsK4NTeXBpKQnDBphngpYZAwDUF7dEBfa3jHK`,
@@ -42,9 +42,9 @@ const projectConfigs: ProjectConfig = {
     //     "Venus BSC": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/CwswJ7sfENafqgAYU1upn3hQgoEV2CXXRZRJ7XtgJrKG`,
     // },
 
-    "LFG": {
-        "Banker Joe Avalanche": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/9NjYuG2BFU1BPacNdKymd9eNdfVCaJM6LhsgD8zSQgDK`,
-    }
+    // "LFG": {
+    //     "Banker Joe Avalanche": `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/9NjYuG2BFU1BPacNdKymd9eNdfVCaJM6LhsgD8zSQgDK`,
+    // }
 
 
     // "Aerodrome": {
@@ -121,7 +121,7 @@ async function main() {
     }
 }
 
-// main();
+main();
 
 
 // uniswap day datas
@@ -174,9 +174,9 @@ async function graphMain() {
 
         // Sum up all revenues
         const totalRevenue = {
-            symbol: "UNI",
-            name: "Uniswap",
-            category: "DEX",
+            // symbol: "UNI",
+            // name: "Uniswap",
+            // category: "DEX",
             revenue: {
                 daily: 0,
                 monthly: 0,
@@ -195,15 +195,15 @@ async function graphMain() {
         totalRevenue.revenue.monthly = Math.round(totalRevenue.revenue.monthly * 100) / 100;
         totalRevenue.revenue.annualized = Math.round(totalRevenue.revenue.annualized * 100) / 100;
 
-        console.log("\nTotal Uniswap Revenue:", totalRevenue);
+        console.log("\nTotal Revenue:", totalRevenue);
         return totalRevenue;
-    } catch (error) {
+    } catch (error) { 
         console.error("Error in main execution:", error);
         throw error;
     }
 }
 
-graphMain();
+// graphMain();
 
 // (async () => {
 //     const data = await fetchAaveVersionRevenue(
